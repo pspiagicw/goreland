@@ -28,3 +28,17 @@ func (s *SystemExecutor) Execute(cmd string, options []string, environment []str
 func (s *SystemExecutor) GetCommand() []string {
 	return []string{}
 }
+
+func Execute(cmd string, options []string, environment []string) error {
+	command := exec.Command(cmd, options...)
+	envs := command.Environ()
+	envs = append(envs, environment...)
+	command.Env = envs
+	command.Stdout = os.Stdout
+	command.Stderr = os.Stderr
+	err := command.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
