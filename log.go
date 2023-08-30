@@ -2,6 +2,7 @@ package goreland
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -10,12 +11,18 @@ var VERBOSITY = 1
 
 func LogSuccess(format string, v ...interface{}) {
 	style := lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
-    fmt.Println((style.Render(" [:)] ") +  fmt.Sprintf(format, v...)))
+	fmt.Println((style.Render(" [:)] ") + fmt.Sprintf(format, v...)))
 }
 
 func LogError(format string, v ...interface{}) {
 	style := lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
 	fmt.Println(style.Render(" [!!] ") + fmt.Sprintf(format, v...))
+}
+
+func LogFatal(format string, v ...interface{}) {
+	style := lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
+	fmt.Println(style.Render(" [!!] ") + fmt.Sprintf(format, v...))
+	os.Exit(1)
 }
 
 func LogInfo(format string, v ...interface{}) {
