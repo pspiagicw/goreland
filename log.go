@@ -5,13 +5,15 @@ import (
 	"os"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/lipgloss/table"
 )
 
 var VERBOSITY = 1
 
 func LogSuccess(format string, v ...interface{}) {
 	style := lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
-	fmt.Println((style.Render(" [:)] ") + fmt.Sprintf(format, v...)))
+	content := lipgloss.NewStyle().Faint(true).Render(fmt.Sprintf(format, v...))
+	fmt.Println(style.Render(" [:)] ") + content)
 }
 
 func LogError(format string, v ...interface{}) {
@@ -32,16 +34,28 @@ func LogInfo(format string, v ...interface{}) {
 
 func LogBullet(format string, v ...interface{}) {
 	style := lipgloss.NewStyle().Foreground(lipgloss.Color("5"))
-	fmt.Println(style.Render(" [@!] ") + fmt.Sprintf(format, v...))
+	fmt.Println(style.Render(" [*] ") + fmt.Sprintf(format, v...))
 
-}
-func LogExec(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
-	borderStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder(), true, true, true, true).PaddingLeft(1).PaddingRight(2)
-	fmt.Println(borderStyle.Render(style.Render("[exec] ") + fmt.Sprintf(format, v...)))
 }
 
 func LogExecSimple(format string, v ...interface{}) {
 	style := lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
 	fmt.Println(style.Render(" [exec] ") + fmt.Sprintf(format, v...))
+}
+func LogExec(format string, v ...interface{}) {
+	LogExecSimple(format, v...)
+}
+func LogTable(headers []string, rows [][]string) {
+
+	headerStyle := lipgloss.NewStyle().Bold(true).Align(lipgloss.Center).PaddingLeft(2).PaddingRight(2)
+	rowStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("112")).Align(lipgloss.Left)
+
+	t := table.New().Border(lipgloss.NormalBorder()).BorderStyle(lipgloss.NewStyle().Foreground(lipgloss.Color("99"))).StyleFunc(func(row, col int) lipgloss.Style {
+		if row == 0 {
+			return headerStyle
+		}
+		return rowStyle
+	}).Headers(headers...).Rows(rows...)
+
+	fmt.Println(t)
 }
