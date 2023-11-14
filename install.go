@@ -17,7 +17,7 @@ func InstallFile(sourcefile string, dest string, opts *InstallFileOptions) error
 	if opts.CreateDir {
 		_, err := os.Stat(dest)
 		if os.IsNotExist(err) {
-			err = os.MkdirAll(dest, 755)
+			err = os.MkdirAll(dest, 0755)
 			if err != nil {
 				return err
 			}

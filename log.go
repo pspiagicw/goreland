@@ -48,7 +48,7 @@ func LogExec(format string, v ...interface{}) {
 func LogTable(headers []string, rows [][]string) {
 
 	headerStyle := lipgloss.NewStyle().Bold(true).Align(lipgloss.Center).PaddingLeft(2).PaddingRight(2)
-	rowStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("112")).Align(lipgloss.Left)
+	rowStyle := lipgloss.NewStyle().Align(lipgloss.Left).PaddingLeft(2).PaddingRight(2)
 
 	t := table.New().Border(lipgloss.NormalBorder()).BorderStyle(lipgloss.NewStyle().Foreground(lipgloss.Color("99"))).StyleFunc(func(row, col int) lipgloss.Style {
 		if row == 0 {
