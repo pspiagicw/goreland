@@ -28,8 +28,9 @@ func LogFatal(format string, v ...interface{}) {
 }
 
 func LogInfo(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("3")).Faint(true)
-	fmt.Println(style.Render(" [=!] ") + fmt.Sprintf(format, v...))
+	style := lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
+    content := lipgloss.NewStyle().Faint(true).SetString(fmt.Sprintf(format, v...)).String()
+	fmt.Println(style.Render(" [=!] ") + content)
 }
 
 func LogBullet(format string, v ...interface{}) {
