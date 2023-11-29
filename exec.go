@@ -42,3 +42,14 @@ func Execute(cmd string, options []string, environment []string) error {
 	}
 	return nil
 }
+func ExecuteWithoutOutput(cmd string, options []string, environment []string) error {
+	command := exec.Command(cmd, options...)
+	envs := command.Environ()
+	envs = append(envs, environment...)
+	command.Env = envs
+	err := command.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
