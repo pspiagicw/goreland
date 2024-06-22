@@ -10,27 +10,33 @@ import (
 
 var VERBOSITY = 1
 
+var successIcon = lipgloss.NewStyle().Foreground(lipgloss.Color("2")).Render(" [:)] ")
+var errorIcon = lipgloss.NewStyle().Foreground(lipgloss.Color("1")).Render(" [!!] ")
+var infoIcon = lipgloss.NewStyle().Foreground(lipgloss.Color("3")).Render(" [=!] ")
+var execIcon = lipgloss.NewStyle().Foreground(lipgloss.Color("6")).Render(" [exec] ")
+
+var successContentStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#909090", Dark: "#626262"})
+var errorContentStyle = lipgloss.NewStyle().Bold(true).Underline(true)
+var infoContentStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#B2B2B2", Dark: "#4A4A4A"})
+
 func LogSuccess(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
-	content := lipgloss.NewStyle().Faint(true).Render(fmt.Sprintf(format, v...))
-	fmt.Println(style.Render(" [:)] ") + content)
+	content := fmt.Sprintf(format, v...)
+	fmt.Println(successIcon + successContentStyle.Render(content))
 }
 
 func LogError(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
-	fmt.Println(style.Render(" [!!] ") + fmt.Sprintf(format, v...))
+	content := fmt.Sprintf(format, v...)
+	fmt.Println(errorIcon + errorContentStyle.Render(content))
 }
 
 func LogFatal(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
-	fmt.Println(style.Render(" [!!] ") + fmt.Sprintf(format, v...))
+	LogError(format, v...)
 	os.Exit(1)
 }
 
 func LogInfo(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
-    content := lipgloss.NewStyle().Faint(true).SetString(fmt.Sprintf(format, v...)).String()
-	fmt.Println(style.Render(" [=!] ") + content)
+	content := fmt.Sprintf(format, v...)
+	fmt.Println(infoIcon + infoContentStyle.Render(content))
 }
 
 func LogBullet(format string, v ...interface{}) {
@@ -40,9 +46,11 @@ func LogBullet(format string, v ...interface{}) {
 }
 
 func LogExecSimple(format string, v ...interface{}) {
-	style := lipgloss.NewStyle().Foreground(lipgloss.Color("6"))
-	fmt.Println(style.Render(" [exec] ") + fmt.Sprintf(format, v...))
+	content := fmt.Sprintf(format, v...)
+	fmt.Println(execIcon + successContentStyle.Render(content))
 }
+
+// Deprecated: Use LogExecSimple instead
 func LogExec(format string, v ...interface{}) {
 	LogExecSimple(format, v...)
 }
